@@ -16,22 +16,26 @@ export default async function handler(
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
-    await page.goto("https://www.instagram.com");
-    const inArray = Array.from(await page.$$("input"));
-    const loginBtn = await page.$("button");
+    await page.goto("https://instagram.com", { waitUntil: "networkidle0" });
 
-    //login section
-    await inArray[0].focus();
-    await inArray[0].type(usrId, { delay: 100 });
-    await inArray[1].focus();
-    await inArray[1].type(pass, { delay: 150 });
-    await loginBtn?.click({ delay: 100 });
+    const pageContent = await page.content();
 
-    const newPage = await browser.newPage();
+    const inArray = await page.$$("._aa4b");
+    const loginBtn = await page.$("._acan");
+    await inArray[0].click();
+    await page.keyboard.type(usrId, { delay: 100 });
+    await inArray[1].click();
+    await page.keyboard.type(pass, { delay: 150 });
+    await loginBtn?.click();
+
+    await page.waitForNavigation();
+
+    const navButtons = await page.$$(".x9f619");
+    await navButtons[0].click();
 
     switch (req.method) {
         case "GET": {
-            res.status(200).json({ message: "href" });
+            res.status(200).json({ message: "test" });
         }
 
         default: {
