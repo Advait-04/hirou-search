@@ -25,6 +25,8 @@ export default async function handler(
 
     await imageTab?.click();
 
+    await page.waitForNetworkIdle({ idleTime: 5000 });
+
     const imgArray = await page.evaluate(() => {
         const srcArray: string[] = [];
         const images = document.querySelectorAll(".tile--img__img");

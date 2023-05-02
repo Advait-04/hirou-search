@@ -29,14 +29,14 @@ const Test = () => {
         setimArray(
             await axios
                 .post("/api/duckduckFetch", {
-                    tag: "momo twice",
+                    tag: "mina twice",
                 })
                 .then((res) => res.data.imageArray)
         );
     }
 
     useEffect(() => {
-        console.log(imArray);
+        console.log(imArray.length);
     }, [imArray]);
 
     return (
@@ -44,17 +44,25 @@ const Test = () => {
             <Button colorScheme="pink" borderRadius="sm" onClick={clickHandler}>
                 Blue
             </Button>
-            {imArray.length !== 0 ??
-                imArray.forEach((imSrc) => {
+            {imArray.length !== 0 ? (
+                imArray.map((imSrc, index) => {
+                    if (index === 0) {
+                        console.log(imSrc);
+                    }
+
                     return (
                         <Image
                             src={imSrc}
                             alt="img"
-                            height={32}
-                            width={32}
+                            height={100}
+                            width={100}
+                            key={index}
                         ></Image>
                     );
-                })}
+                })
+            ) : (
+                <Spinner color="pink.500" size="xl" />
+            )}
         </div>
     );
 };
