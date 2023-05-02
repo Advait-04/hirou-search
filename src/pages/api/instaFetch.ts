@@ -13,12 +13,12 @@ export default async function handler(
         ? process.env.NEXT_PUBLIC_INSTAGRAM_PASS
         : "";
 
+    const query = req.body;
+
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
     await page.goto("https://instagram.com", { waitUntil: "networkidle0" });
-
-    const pageContent = await page.content();
 
     const inArray = await page.$$("._aa4b");
     const loginBtn = await page.$("._acan");
@@ -30,12 +30,30 @@ export default async function handler(
 
     await page.waitForNavigation();
 
-    const navButtons = await page.$$(".x9f619");
-    await navButtons[0].click();
+    if ((await page.$("._acan")) !== null) {
+        await (await page.$(".x1i10hfl"))?.click();
+    }
+
+    await page.goto(`https://instagram.com/explore/tags/${query.tag}`, {
+        waitUntil: "networkidle0",
+    });
+
+    const sr = await page.evaluate(() => {
+        const srcArray: string[] = [];
+        const images = document.querySelectorAll(".x5yr21d");
+        images.forEach((image) => {
+            const imSrc = image.getAttribute("src");
+            if (imSrc !== null) {
+                srcArray.push(imSrc);
+            }
+        });
+
+        return srcArray;
+    });
 
     switch (req.method) {
-        case "GET": {
-            res.status(200).json({ message: "test" });
+        case "POST": {
+            res.status(200).json({ imageArray: sr });
         }
 
         default: {
