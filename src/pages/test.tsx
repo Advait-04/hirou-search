@@ -17,26 +17,31 @@ const Test = () => {
         //         })
         //         .then((res) => res.data.imageArray)
         // );
-
         // const temp = await axios
         //     .post("api/twitterFetch", {
         //         tag: "momo",
         //     })
         //     .then((res) => res.data.imageArray);
-
         // setimArray(temp);
+        // setimArray(
+        //     await axios
+        //         .post("/api/duckduckFetch", {
+        //             tag: "mina twice",
+        //         })
+        //         .then((res) => res.data.imageArray)
+        // );
 
         setimArray(
             await axios
-                .post("/api/duckduckFetch", {
-                    tag: "mina twice",
+                .post("/api/twitterFetch", {
+                    tag: "minatwice",
                 })
                 .then((res) => res.data.imageArray)
         );
     }
 
     useEffect(() => {
-        console.log(imArray.length);
+        console.log(imArray);
     }, [imArray]);
 
     return (
@@ -45,21 +50,22 @@ const Test = () => {
                 Blue
             </Button>
             {imArray.length !== 0 ? (
-                imArray.map((imSrc, index) => {
-                    if (index === 0) {
-                        console.log(imSrc);
-                    }
+                // <imArray.map((imSrc, index) => {
+                //     if (index === 0) {
+                //         console.log(imSrc);
+                //     }
 
-                    return (
-                        <Image
-                            src={imSrc}
-                            alt="img"
-                            height={100}
-                            width={100}
-                            key={index}
-                        ></Image>
-                    );
-                })
+                //     return (
+                //         <Image
+                //             src={imSrc}
+                //             alt="img"
+                //             height={100}
+                //             width={100}
+                //             key={index}
+                //         ></Image>
+                //     );
+                // }>
+                <h1>Hello</h1>
             ) : (
                 <Spinner color="pink.500" size="xl" />
             )}
